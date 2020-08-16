@@ -59,3 +59,39 @@ class Solution {
         return res;
     }
 }
+
+//treemap
+class Solution {
+    public int[] getLeastNumbers(int[] arr, int k) {
+        if (k == 0 || arr.length == 0) {
+            return new int[0];
+        }
+        TreeMap<Integer, Integer> map = new TreeMap<>();
+        int cnt = 0;
+        for (int a : arr) {
+            if (cnt < k) {
+                map.put(a, map.getOrDefault(a, 0) + 1);
+                cnt++;
+                continue;
+            }
+            Map.Entry<Integer, Integer> entry = map.lastEntry();
+            if (entry.getKey() > a) {
+                map.put(a, map.getOrDefault(a, 0) + 1);
+                if (entry.getValue() == 1) {
+                    map.pollLastEntry();
+                }else {
+                    map.put(entry.getKey(), entry.getValue() - 1);
+                }
+            }
+        }
+        int[] res = new int[k];
+        int index = 0;
+        for (Map.Entry<Integer, Integer> entry : map.entrySet()) {
+            int v = entry.getValue();
+            while (v-- > 0) {
+                res[index++] = entry.getKey();
+            }
+        }
+        return res;
+    }
+}
